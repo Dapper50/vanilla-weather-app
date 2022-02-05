@@ -46,7 +46,7 @@ function displayForecast(response) {
          alt=""
          width="42"
        />
-       <div class="weatherss-forecast-temperature">
+       <div class="weather-forecast-temperature">
          <span class="weather-forecast-temperature-max"> ${Math.round(
            forecastDay.temp.max
          )}° </span>
@@ -68,6 +68,23 @@ function getForecast(coordinates) {
   let apiKey = "1686a7cedffa8fb846a617fbc78c9827";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&unit=metric`;
   axios.get(apiUrl).then(displayForecast);
+}
+
+function newPosition(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(retrievePosition);
+}
+
+let button = document.querySelector("#button");
+button.addEventListener("click", newPosition);
+
+function retrievePosition(position) {
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+  let units = "metric";
+  let apiKey = "1686a7cedffa8fb846a617fbc78c9827";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(displayTemperature);
 }
 
 function displayTemperature(response) {
@@ -136,4 +153,4 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
-search("New york");
+search("Lagos");
